@@ -7,21 +7,18 @@
   "scripts": {
     "build": "tsup && npx fix-tsup-cjs"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "files": [
+    "build/**"
+  ],
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
+      "require": "./build/index.cjs",
+      "import": "./build/index.js"
     }
   },
-  "files": [
-    "dist/*.js",
-    "dist/*.d.ts",
-    "package.json"
-  ],
   "license": "MIT",
   "keywords": [
     "strapi",
@@ -33,9 +30,6 @@
     "axios": "^1.7.7"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "rimraf": "^5.0.5",
-    "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.3"
   },

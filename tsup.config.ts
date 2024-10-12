@@ -6,6 +6,6 @@ export default defineConfig({
     format: ['cjs', 'esm'],    // Output both CommonJS and ESModule
     sourcemap: true,           // Generate source maps
     clean: true,               // Clean the dist folder before bundling
-    dts: true,                  // Generate .d.ts files for TypeScript consumers
-    replaceNodeEnv: true,
+    dts: true,                 // Generate .d.ts files for TypeScript consumers
+    outDir: 'build'
 });

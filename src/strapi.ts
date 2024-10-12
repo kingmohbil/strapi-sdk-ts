@@ -1,11 +1,53 @@
-import axios, { AxiosInstance, AxiosRequestConfig, } from 'axios';
-import * as Types from './strapi.d'
+// @ts-ignore
+import axios, { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults, HttpStatusCode } from 'axios';
 
 const DELETE_SUCCESS_CODE = 200 as const;
 
-export  class Strapi {
+
+export type HttpStatusCodes = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];
+
+export interface StrapiClientArgs {
+    baseUrl?: string;
+    apiKey?: string;
+    axiosOptions?: CreateAxiosDefaults;
+}
+
+export interface StrapiResponse<T = any> {
+    data: T;
+    status: HttpStatusCodes;
+}
+
+export interface StrapiDeleteResponse {
+    deleted: boolean;
+    status: HttpStatusCodes;
+}
+
+export interface StrapiLoginArgs {
+    identifier: string;
+    password: string;
+}
+
+export interface StrapiDocument {
+    id: number;
+    documentId: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string | null;
+}
+
+export interface Metadata {
+    pagination: {
+        page: number;
+        pageSize: number;
+        pageCount: number;
+        total: number;
+    };
+}
+
+export class Strapi {
     axios: AxiosInstance;
-    constructor(params?: Types.StrapiClientArgs) {
+    constructor(params?: StrapiClientArgs) {
         this.axios = axios.create({
             baseURL: params?.baseUrl ? `${params?.baseUrl}/api` : 'http://localhost:1337/api',
             ...params?.axiosOptions,
@@ -42,7 +84,7 @@ export  class Strapi {
         resource: string,
         id: string | number,
         options?: AxiosRequestConfig
-    ): Promise<Types.StrapiResponse<T>> {
+    ): Promise<StrapiResponse<T>> {
         try {
             const res = await this.axios.get(`${resource}/${id}`, options);
             return { data: res.data, status: res.status };
@@ -59,7 +101,7 @@ export  class Strapi {
      * @param {string} resource - The resource path or endpoint from which to fetch the data.
      * @param {AxiosRequestConfig} [options] - Optional Axios configuration for the request (e.g., headers, params).
      *
-     * @returns {Promise<Types.StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
+     * @returns {Promise<StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
      *                                               of type `T` and the HTTP status code of the response.
      *
      * @throws Will reject the promise if the HTTP request fails, returning the error.
@@ -75,7 +117,7 @@ export  class Strapi {
      *     console.error('Error fetching users:', error);
      *   });
      */
-    async findAll<T = any>(resource: string, options?: AxiosRequestConfig): Promise<Types.StrapiResponse<T>> {
+    async findAll<T = any>(resource: string, options?: AxiosRequestConfig): Promise<StrapiResponse<T>> {
         try {
             const res = await this.axios.get(`${resource}`, options);
             return { data: res.data, status: res.status };
@@ -93,7 +135,7 @@ export  class Strapi {
      * @param {any} body - The data to be sent in the body of the request for creating the resource.
      * @param {AxiosRequestConfig} [options] - Optional Axios configuration for the request (e.g., headers, params).
      *
-     * @returns {Promise<Types.StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
+     * @returns {Promise<StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
      *                                               of type `T` and the HTTP status code of the response.
      *
      * @throws Will reject the promise if the HTTP request fails, returning the error.
@@ -109,7 +151,7 @@ export  class Strapi {
      *     console.error('Error creating user:', error);
      *   });
      */
-    async create<T = any>(resource: string, body: any, options?: AxiosRequestConfig): Promise<Types.StrapiResponse<T>> {
+    async create<T = any>(resource: string, body: any, options?: AxiosRequestConfig): Promise<StrapiResponse<T>> {
         try {
             const res = await this.axios.post(`${resource}`, body, options);
             return { data: res.data, status: res.status };
@@ -128,7 +170,7 @@ export  class Strapi {
      * @param {any} updatedData - The new data to be sent in the body of the request for updating the resource.
      * @param {AxiosRequestConfig} [options] - Optional Axios configuration for the request (e.g., headers, params).
      *
-     * @returns {Promise<Types.StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
+     * @returns {Promise<StrapiResponse<T>>} - A promise that resolves to an object containing the `data`
      *                                               of type `T` and the HTTP status code of the response.
      *
      * @throws Will reject the promise if the HTTP request fails, returning the error.
@@ -149,7 +191,7 @@ export  class Strapi {
         id: string | number,
         updatedData: any,
         options?: AxiosRequestConfig
-    ): Promise<Types.StrapiResponse<T>> {
+    ): Promise<StrapiResponse<T>> {
         try {
             const res = await this.axios.put(`${resource}/${id}`, updatedData, options);
             return { data: res.data, status: res.status };
@@ -164,7 +206,7 @@ export  class Strapi {
      * @param {string} resource - The resource path or endpoint from which the data will be deleted.
      * @param {string | number} id - The unique identifier of the resource to be deleted.
      *
-     * @returns {Promise<Types.StrapiDeleteResponse>} - A promise that resolves to an object containing the HTTP
+     * @returns {Promise<StrapiDeleteResponse>} - A promise that resolves to an object containing the HTTP
      *                                                 status code and a boolean indicating whether the deletion
      *                                                 was successful.
      *
@@ -181,7 +223,7 @@ export  class Strapi {
      *     console.error('Error deleting user:', error);
      *   });
      */
-    async delete(resource: string, id: string | number): Promise<Types.StrapiDeleteResponse> {
+    async delete(resource: string, id: string | number): Promise<StrapiDeleteResponse> {
         try {
             const res = await this.axios.delete(`${resource}/${id}`);
             return { status: res.status, deleted: res.status === DELETE_SUCCESS_CODE };
@@ -190,7 +232,7 @@ export  class Strapi {
         }
     }
 
-    async login<T>(args: Types.StrapiClientArgs): Promise<Types.StrapiResponse<T>> {
+    async login<T>(args: StrapiClientArgs): Promise<StrapiResponse<T>> {
         try {
             const res = await this.axios.post('/auth/local', args);
             return { data: res.data, status: res.status };
