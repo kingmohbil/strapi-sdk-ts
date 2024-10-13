@@ -1,5 +1,5 @@
 {
-  "name": "strapi-sdk",
+  "name": "strapi-sdk-ts",
   "author": "Mohammad Alwazzan",
   "version": "1.0.0",
   "description": "",
@@ -24,7 +24,8 @@
     "strapi",
     "strapi-sdk-ts",
     "strapi-sdk-js",
-    "typescript"
+    "typescript",
+    "javascript"
   ],
   "dependencies": {
     "axios": "^1.7.7"
@@ -35,6 +36,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kingmohbil/strapi-sdk.git"
+    "url": "https://github.com/kingmohbil/strapi-sdk-ts.git"
   }
 }
