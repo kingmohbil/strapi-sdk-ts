@@ -1,0 +1,41 @@
+{
+  "name": "strapi-sdk-ts",
+  "author": "Mohammad Alwazzan",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "tsup && npx fix-tsup-cjs"
+  },
+  "files": [
+    "build/**"
+  ],
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./build/index.cjs",
+      "import": "./build/index.js"
+    }
+  },
+  "license": "MIT",
+  "keywords": [
+    "strapi",
+    "strapi-sdk-ts",
+    "strapi-sdk-js",
+    "typescript",
+    "javascript"
+  ],
+  "dependencies": {
+    "axios": "^1.7.7"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingmohbil/strapi-sdk-ts.git"
+  }
+}
