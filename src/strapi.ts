@@ -1,7 +1,7 @@
 // @ts-ignore
 import axios, { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults, HttpStatusCode } from 'axios';
 
-const DELETE_SUCCESS_CODE = 200 as const;
+const DELETE_SUCCESS_CODE = 204 as const;
 
 
 export type HttpStatusCodes = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];
